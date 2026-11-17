@@ -52,7 +52,7 @@ Datastar enables dynamic updates without full page reloads, and Drizzle manages 
 
 ## Running the Database
 
-5. **Bootstrap the local D1 state** (first install, or any time `.wrangler/` has been deleted):
+3. **Bootstrap the local D1 state** (first install, or any time `.wrangler/` has been deleted):
 
    ```bash
    pnpm db:bootstrap:local
@@ -60,7 +60,7 @@ Datastar enables dynamic updates without full page reloads, and Drizzle manages 
 
    This runs a no-op `SELECT 1` against the local D1 binding (so Miniflare creates `.wrangler/state/v3/d1/miniflare-D1DatabaseObject/` and the hash-named sqlite file inside it), then symlinks that file to `cf-app.db` at the project root — which is what Drizzle's local config reads. The symlink is gitignored.
 
-6. **Apply database migrations**:
+4. **Apply database migrations**:
 
    ```bash
    pnpm db:migrate:local
@@ -68,7 +68,7 @@ Datastar enables dynamic updates without full page reloads, and Drizzle manages 
 
    To wipe local data and start over: `pnpm db:reset:local` clears the D1 dir and re-runs the bootstrap (symlink included); then run `db:migrate:local` again.
 
-7. **Start the development server**:
+5. **Start the development server**:
 
    ```bash
    pnpm dev
