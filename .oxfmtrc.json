@@ -1,0 +1,24 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "singleQuote": true,
+  "printWidth": 100,
+  "sortImports": {
+    "newlinesBetween": false
+  },
+  "sortPackageJson": {
+    "sortScripts": true
+  },
+  "sortTailwindcss": {
+    "functions": ["cn", "clsx"]
+  },
+  "ignorePatterns": [
+    "dist",
+    "dist-server",
+    "public",
+    "node_modules",
+    ".wrangler",
+    "worker-configuration.d.ts",
+    ".github",
+    "nub.lock"
+  ]
+}

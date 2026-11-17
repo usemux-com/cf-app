@@ -1,0 +1,76 @@
+@import 'tailwindcss';
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Design system — one @theme block re-skins the whole app.
+   Tailwind v4 resolves every utility (text-gray-900, bg-gray-50, border-gray-200…)
+   from these CSS variables, so remapping the ramp here restyles every view at once.
+   Aesthetic: dark charcoal "terminal" — lifted surface panels, text never pure
+   white, mono for numbers/labels, one restrained accent, hairline dividers.
+   ──────────────────────────────────────────────────────────────────────────── */
+@theme {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+
+  /* Inverted neutral ramp: page (50) is darkest, text (900) is lightest. */
+  --color-gray-50: #161616; /* page canvas        */
+  --color-gray-100: #1c1c1c; /* recessed (inputs)  */
+  --color-gray-200: #2a2a2a; /* hairline borders   */
+  --color-gray-300: #3a3a3a; /* stronger borders   */
+  --color-gray-400: #595959;
+  --color-gray-500: #8c8c8c; /* secondary labels   */
+  --color-gray-600: #a8a8a8;
+  --color-gray-700: #c6c6c6;
+  --color-gray-800: #e0e0e0;
+  --color-gray-900: #f4f4f3; /* headings / primary */
+
+  /* Dedicated surface token — DON'T remap --color-white (text-white needs it). */
+  --color-surface: #1e1e1e;
+
+  /* One restrained accent for primary actions + links. */
+  --color-blue-600: #4f86dd;
+  --color-blue-700: #3f76cd;
+
+  /* Semantics as low-opacity fills (data, not chrome) + readable error text. */
+  --color-red-100: oklab(0.66 0.14 0.05 / 0.18);
+  --color-red-500: #e0707a;
+}
+
+/* Native controls + scrollbars render dark (no white flash). */
+:root {
+  color-scheme: dark;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-gray-50);
+    color: var(--color-gray-900);
+    font-family: var(--font-sans);
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Component layer outranks any plugin base styles, giving one compact control
+   height instead of chunky defaults. */
+@layer components {
+  .field {
+    @apply w-full rounded-md border border-gray-300 bg-gray-100 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-500;
+  }
+  .field:focus {
+    @apply border-blue-600 ring-1 ring-blue-600 outline-none;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center rounded-md px-3 py-2 text-sm font-medium transition-colors;
+  }
+  .btn-primary {
+    @apply bg-blue-600 text-white hover:bg-blue-700;
+  }
+  .btn-ghost {
+    @apply rounded-md px-2 py-1 text-xs font-medium tracking-wide text-gray-500 uppercase transition-colors hover:text-red-500;
+  }
+
+  /* Squared, low-opacity chip — status/category, not loud pills. */
+  .chip {
+    @apply rounded border border-gray-200 px-1.5 py-0.5 font-mono text-xs text-gray-500;
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "ignorePatterns": [
+    "**/*.mjs",
+    "public/**",
+    "dist/**",
+    "dist-server/**",
+    "node_modules/**",
+    ".wrangler/**"
+  ],
+  "rules": {
+    "typescript/no-misused-promises": [
+      "error",
+      {
+        "checksVoidReturn": {
+          "attributes": false
+        }
+      }
+    ],
+    "typescript/no-unsafe-return": "error",
+    "typescript/no-unsafe-member-access": "error",
+    "typescript/no-unsafe-assignment": "error",
+    "typescript/no-unsafe-argument": "error",
+    "typescript/no-base-to-string": "off",
+    "typescript/restrict-template-expressions": "off"
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "name": "cf-app",
+  "type": "module",
+  "scripts": {
+    "build": "nub run typecheck && vite build && vite build --ssr",
+    "cf-typegen": "node tools/wrangler-config/bin/gen.ts development && wrangler types --include-runtime false",
+    "db:bootstrap:local": "node tools/wrangler-config/bin/gen.ts development && wrangler d1 execute cfapp-db --local --command 'SELECT 1' && ln -sf $(ls .wrangler/state/v3/d1/miniflare-D1DatabaseObject/[a-f0-9]*.sqlite | head -1) cf-app.db",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:migrate:local": "drizzle-kit migrate --config=drizzle.config.local.ts",
+    "db:reset:local": "rm -f .wrangler/state/v3/d1/miniflare-D1DatabaseObject/* && nub run db:bootstrap:local",
+    "db:studio": "drizzle-kit studio",
+    "db:studio:local": "drizzle-kit studio --config=drizzle.config.local.ts",
+    "deploy": "nub run verify && node tools/wrangler-config/bin/gen.ts production && nub run db:migrate && wrangler deploy dist-server/index.js --minify",
+    "dev": "nub run db:migrate:local && vite --port ${PORT:-5173} --host ${HOST:-127.0.0.1}",
+    "fmt": "oxfmt",
+    "fmt:check": "oxfmt --check",
+    "lint": "oxlint --type-aware --disable-nested-config src/ tests/ tools/",
+    "prepare": "[ -n \"$CI\" ] || simple-git-hooks",
+    "preview": "vite preview",
+    "ready": "nub run fmt && nub run lint && nub run build",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "verify": "nub run ready",
+    "wrangler:config": "node tools/wrangler-config/bin/gen.ts"
+  },
+  "dependencies": {
+    "@hono/standard-validator": "^0.2.2",
+    "@standard-schema/spec": "^1.1.0",
+    "drizzle-orm": "^1.0.0-rc.3",
+    "hono": "^4.12.23",
+    "valibot": "^1.4.1"
+  },
+  "devDependencies": {
+    "@cloudflare/vite-plugin": "^1.50.0",
+    "@hono/vite-build": "^1.11.1",
+    "@playwright/test": "^1.61.0",
+    "@tailwindcss/vite": "^4.3.0",
+    "@types/node": "^25.6.0",
+    "drizzle-kit": "^1.0.0-rc.3",
+    "lint-staged": "^17.3.0",
+    "oxfmt": "^0.63.0",
+    "oxlint": "^1.78.0",
+    "oxlint-tsgolint": "^7.0.2001",
+    "simple-git-hooks": "^2.13.1",
+    "tailwindcss": "^4.3.0",
+    "typescript": "^7.0.2",
+    "vite": "^8.2.1",
+    "vitest": "^4.1.10",
+    "wrangler": "^4.94.0"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "nubx lint-staged"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx,mjs,cjs}": [
+      "oxlint --fix",
+      "oxfmt"
+    ],
+    "*.{json,jsonc,md,css,yml,yaml,html}": [
+      "oxfmt"
+    ]
+  },
+  "devEngines": {
+    "packageManager": {
+      "name": "nub",
+      "version": "^0.7.0",
+      "onFail": "warn"
+    }
+  },
+  "allowBuilds": {
+    "@tailwindcss/oxide": true,
+    "workerd": true
+  }
+}

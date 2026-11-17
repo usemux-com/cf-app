@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "skipLibCheck": true,
+    // Required for Node-native `import './foo.ts'` (gen CLI + relative loader imports).
+    // Without this, tsc rejects .ts extensions while Node ESM requires them.
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "lib": ["ESNext"],
+    "types": ["./worker-configuration", "vite/client"],
+    "jsx": "react-jsx",
+    "jsxImportSource": "hono/jsx",
+    "outDir": "./dist",
+    "paths": {
+      "@/*": ["./src/*"],
+      "$/*": ["./*"]
+    }
+  },
+  "exclude": ["node_modules"]
+}
